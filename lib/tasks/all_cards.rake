@@ -2,7 +2,7 @@ namespace :all_cards do
   desc "Split all cards into individual [LANG] files"
   task split: :environment do
     puts ".: Fetching all_cards_* file"
-    all_cards_file = DataDir.instance.all_cards_latest
+    all_cards_file = ScryfallDataDir.instance.all_cards_latest
     return if all_cards_file.nil?
 
     puts ".: Counting objects"
@@ -20,7 +20,7 @@ namespace :all_cards do
       format: "%t: |%B| %c/%C %a"
     )
 
-    File.foreach("data/#{all_cards_file}").with_index do |line, _line_num|
+    File.foreach("scryfall_data/#{all_cards_file}").with_index do |line, _line_num|
       next if line.match?(/^\[|\]$/) # Skip first and last lines
       clean_line = line.strip
       clean_line = clean_line[0..-2] if clean_line[-1] == "," # Remove trailing comma
