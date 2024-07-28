@@ -10,9 +10,18 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema[7.1].define(version: 0) do
+ActiveRecord::Schema[7.1].define(version: 2024_07_28_232525) do
   # These are extensions that must be enabled in order to support this database
   enable_extension "pgcrypto"
   enable_extension "plpgsql"
+
+  create_table "cards", id: :uuid, default: -> { "gen_random_uuid()" }, force: :cascade do |t|
+    t.jsonb "raw_data", default: {}, null: false
+    t.datetime "created_at", null: false
+    t.datetime "updated_at", null: false
+    t.virtual "sname", type: :text, as: "(raw_data ->> 'name'::text)", stored: true
+    t.virtual "searchable", type: :tsvector, as: "(setweight(to_tsvector('english'::regconfig, COALESCE((raw_data ->> 'name'::text), ''::text)), 'A'::\"char\") || setweight(to_tsvector('english'::regconfig, COALESCE((raw_data ->> 'printed_name'::text), ''::text)), 'B'::\"char\"))", stored: true
+    t.index ["searchable"], name: "index_cards_on_searchable", using: :gin
+  end
 
 end
