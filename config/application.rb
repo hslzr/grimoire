@@ -38,5 +38,10 @@ module Grimoire
 
     # Don't generate system test files.
     config.generators.system_tests = nil
+
+    # Use UUIDs for primary keys
+    config.generators do |g|
+      g.orm :active_record, primary_key_type: :uuid
+    end
   end
 end
