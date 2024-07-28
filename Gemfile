@@ -12,6 +12,8 @@ gem "ruby-progressbar"
 gem "sprockets-rails"
 gem "stimulus-rails"
 gem "tailwindcss-rails"
+gem "tty-logger"
+gem "tty-progressbar"
 gem "turbo-rails"
 gem "tzinfo-data", platforms: %i[ windows jruby ]
 
