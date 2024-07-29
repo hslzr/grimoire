@@ -94,7 +94,7 @@ namespace :all_cards do
 
     file_object = File.foreach(lang_file)
 
-    file_object.each_slice(300) do |lines|
+    file_object.each_slice(500) do |lines|
       cards = lines.map do |line|
         json = JSON.parse(line)
         json["lang"] = lang
