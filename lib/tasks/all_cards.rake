@@ -71,21 +71,20 @@ namespace :all_cards do
       current_language = lang_file.match(/(en|es)\.json/)[1]
       logger.info("Importing cards for language: #{current_language}")
 
-      import_cards_from_file(lang_file)
+      import_card_names_from_file(lang_file)
+      #import_card_objects_from_file(lang_file)
     end
   end
 
-  def import_cards_from_file(lang_file)
+  def import_card_names_from_file(lang_file)
     logger = TTY::Logger.new
     logger.info("Importing cards from file: #{lang_file}")
 
     line_count = `wc -l #{lang_file}`.strip.split(" ")[0].to_i - 2
 
-    cards = []
-
     lang = lang_file.match(/all-cards-(?<name>[a-z]{2})\.json/)[:name]
 
-    progressbar = TTY::ProgressBar.new("Importing :elapsed [:bar] :current/:total :percent",
+    progressbar = TTY::ProgressBar.new("Importing card names :elapsed [:bar] :current/:total :percent",
      total: line_count,
      hide_cursor: true,
      clear: true,
@@ -95,18 +94,89 @@ namespace :all_cards do
     file_object = File.foreach(lang_file)
 
     file_object.each_slice(500) do |lines|
-      cards = lines.map do |line|
+      card_names = lines.map do |line|
         json = JSON.parse(line)
-        json["lang"] = lang
         json["scryfall_id"] = json.delete("id")
-        { raw_data: json }
+        json["lang"] = lang
+        { name: json["name"], printed_name: json["printed_name"], flavor_name: json["flavor_name"], lang: json["lang"] }
+      end
+      
+      card_name_only = card_names.filter_map do |card_name|
+        next unless card_name[:name].present? && card_name[:printed_name].blank? && card_name[:flavor_name].blank?
+        { name: card_name[:name], lang: card_name[:lang] }
       end
 
-      Card.insert_all(cards)
-      progressbar.advance(cards.size)
+      created_names = Card::Name.insert_all(card_name_only, unique_by: [:name, :lang], returning: [:id, :name]).rows.to_h { [_2, _1] }
+
+      card_printed_names = card_names.filter_map do |card_name|
+        next unless card_name[:printed_name].present? && card_name[:name].present?
+        { 
+          card_name_id: created_names[card_name[:name]],
+          name: card_name[:printed_name],
+          lang: card_name[:lang]
+        }
+      end
+
+      card_flavor_names = card_names.filter_map do |card_name|
+        next unless card_name[:flavor_name].present? && card_name[:name].present?
+        { 
+          card_name_id: created_names[card_name[:name]],
+          name: card_name[:flavor_name],
+          lang: card_name[:lang]
+        }
+      end
+
+      Card::PrintedName.insert_all(card_printed_names, unique_by: [:name, :lang])
+      Card::FlavorName.insert_all(card_flavor_names, unique_by: [:name, :lang])
+
+      progressbar.advance(card_names.size)
     end
 
+  ensure
     progressbar.finish
     logger.success("Done")
+  end
+
+  def import_card_objects_from_file(lang_file)
+    logger = TTY::Logger.new
+    logger.info("Importing cards from file: #{lang_file}")
+
+    line_count = `wc -l #{lang_file}`.strip.split(" ")[0].to_i - 2
+
+    lang = lang_file.match(/all-cards-(?<name>[a-z]{2})\.json/)[:name]
+
+    progressbar = TTY::ProgressBar.new("Mapping card objects to their names :elapsed [:bar] :current/:total :percent",
+     total: line_count,
+     hide_cursor: true,
+     clear: true,
+     bar_format: :block,
+    )
+
+    file_object = File.foreach(lang_file)
+
+    file_object.each_slice(1) do |lines|
+      card_objects = lines.map do |line|
+        json = JSON.parse(line)
+        json["scryfall_id"] = json.delete("id")
+        json["lang"] = lang
+        card_name_id = Card::Name.where(
+          name: json["name"],
+          printed_name: json["printed_name"],
+          flavor_name: json["flavor_name"],
+          lang: json["lang"]
+        ).pick(:id)
+        { card_name_id: card_name_id, raw_data: json }
+      end
+
+      Card::Object.insert_all(card_objects)
+
+      progressbar.advance(card_objects.size)
+    end
+
+    logger.success("Done")
+  rescue ActiveRecord::NotNullViolation => e
+    binding.break
+  ensure
+    progressbar.finish
   end
 end
