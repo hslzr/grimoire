@@ -1,5 +1,2 @@
-module Card
-  def self.table_name_prefix
-    "card_"
-  end
+class Card < ApplicationRecord
 end
