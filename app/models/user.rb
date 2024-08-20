@@ -13,8 +13,9 @@ class User < ApplicationRecord
   has_many :sessions, dependent: :destroy
 
   ## Validations
+  validates :username, presence: true, uniqueness: true, length: { minimum: 3, maximum: 20 }
   validates :email, presence: true, uniqueness: true, format: { with: URI::MailTo::EMAIL_REGEXP }
-  validates :password, allow_nil: true, length: { minimum: 12 }
+  validates :password, allow_nil: true, length: { minimum: 6 }
 
   ## Callbacks
   normalizes :email, with: -> { _1.strip.downcase }

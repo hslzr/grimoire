@@ -12,7 +12,7 @@ class RegistrationsController < ApplicationController
       session_record = @user.sessions.create!
       cookies.signed.permanent[:session_token] = { value: session_record.id, httponly: true }
 
-      send_email_verification
+      #send_email_verification
       redirect_to root_path, notice: "Welcome! You have signed up successfully"
     else
       render :new, status: :unprocessable_entity
@@ -21,7 +21,7 @@ class RegistrationsController < ApplicationController
 
   private
     def user_params
-      params.permit(:email, :password, :password_confirmation)
+      params.permit(:username, :email, :password, :password_confirmation)
     end
 
     def send_email_verification

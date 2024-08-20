@@ -12,7 +12,17 @@
   </head>
 
   <body>
-    <main class="container mx-auto mt-28 px-5 flex">
+    <% if Current.user %>
+      <%# render 'navbar' %>
+    <% end %>
+    <% if flash.any? %>
+      <% flash.each do |key, value| %>
+        <div class="<%= bg_for_flash(key) %> text-white p-4 text-center">
+          <%= value %>
+        </div>
+      <% end %>
+    <% end %>
+    <main class="container mx-auto mt-20 px-5 flex flex-col">
       <%= yield %>
     </main>
   </body>

@@ -73,6 +73,7 @@ GEM
       tzinfo (~> 2.0, >= 2.0.5)
     authentication-zero (3.0.2)
     base64 (0.2.0)
+    bcrypt (3.1.20)
     bigdecimal (3.1.8)
     bindex (0.8.1)
     bootsnap (1.18.4)
@@ -253,6 +254,7 @@ PLATFORMS
 
 DEPENDENCIES
   authentication-zero (~> 3.0)
+  bcrypt (~> 3.1.7)
   bootsnap
   debug
   importmap-rails
