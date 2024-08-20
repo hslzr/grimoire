@@ -10,7 +10,7 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema[7.2].define(version: 2024_08_20_021218) do
+ActiveRecord::Schema[7.2].define(version: 2024_08_20_025853) do
   # These are extensions that must be enabled in order to support this database
   enable_extension "pgcrypto"
   enable_extension "plpgsql"
@@ -22,8 +22,17 @@ ActiveRecord::Schema[7.2].define(version: 2024_08_20_021218) do
     t.index ["raw_data"], name: "index_cards_on_raw_data", using: :gin
   end
 
-  create_table "sessions", force: :cascade do |t|
-    t.bigint "user_id", null: false
+  create_table "collected_cards", id: :uuid, default: -> { "gen_random_uuid()" }, force: :cascade do |t|
+    t.uuid "user_id", null: false
+    t.uuid "card_id", null: false
+    t.datetime "created_at", null: false
+    t.datetime "updated_at", null: false
+    t.index ["card_id"], name: "index_collected_cards_on_card_id"
+    t.index ["user_id"], name: "index_collected_cards_on_user_id"
+  end
+
+  create_table "sessions", id: :uuid, default: -> { "gen_random_uuid()" }, force: :cascade do |t|
+    t.uuid "user_id", null: false
     t.string "user_agent"
     t.string "ip_address"
     t.datetime "created_at", null: false
@@ -31,7 +40,7 @@ ActiveRecord::Schema[7.2].define(version: 2024_08_20_021218) do
     t.index ["user_id"], name: "index_sessions_on_user_id"
   end
 
-  create_table "users", force: :cascade do |t|
+  create_table "users", id: :uuid, default: -> { "gen_random_uuid()" }, force: :cascade do |t|
     t.string "username", null: false
     t.string "email", null: false
     t.string "password_digest", null: false
@@ -42,5 +51,7 @@ ActiveRecord::Schema[7.2].define(version: 2024_08_20_021218) do
     t.index ["username"], name: "index_users_on_username", unique: true
   end
 
+  add_foreign_key "collected_cards", "cards"
+  add_foreign_key "collected_cards", "users"
   add_foreign_key "sessions", "users"
 end

@@ -92,7 +92,7 @@ namespace :all_cards do
 
     file_object = File.foreach(lang_file)
 
-    file_object.each_slice(500) do |lines|
+    file_object.each_slice(1_000) do |lines|
       cards = lines.map do |line|
         json = JSON.parse(line)
         json["scryfall_id"] = json.delete("id")

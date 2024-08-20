@@ -1,4 +1,5 @@
 Rails.application.routes.draw do
+  get "cards/search"
   get  "sign_in", to: "sessions#new"
   post "sign_in", to: "sessions#create"
   get  "sign_up", to: "registrations#new"
@@ -12,6 +13,8 @@ Rails.application.routes.draw do
     resource :email_verification, only: [:show, :create]
     resource :password_reset,     only: [:new, :edit, :create, :update]
   end
+
+  get "collection", to: "collection#index"
 
   root "home#index"
 

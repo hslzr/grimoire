@@ -11,6 +11,7 @@ class User < ApplicationRecord
 
   ## Associations
   has_many :sessions, dependent: :destroy
+  has_many :collected_cards, dependent: :destroy
 
   ## Validations
   validates :username, presence: true, uniqueness: true, length: { minimum: 3, maximum: 20 }

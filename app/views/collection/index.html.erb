@@ -1,0 +1,25 @@
+<div class="mb-8">
+  <h1 class="font-bold text-4xl">Collection#index</h1>
+</div>
+
+<div class="mb-8">
+</div>
+
+<div class="mt-8">
+  <table class="w-full table-auto">
+    <thead>
+      <tr>
+        <th class="text-left">name</th>
+        <th class="text-left">created_at</th>
+      </tr>
+    </thead>
+    <tbody>
+      <% @collected_cards.each do |cc| %>
+        <tr>
+          <td><%= cc.card.raw_data["name"] %></td>
+          <td><%= cc.created_at %></td>
+        </tr>
+      <% end %>
+    </tbody>
+  </table>
+</div>
