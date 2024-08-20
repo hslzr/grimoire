@@ -6,7 +6,7 @@ gem "bootsnap", require: false
 gem "importmap-rails"
 gem "pg", "~> 1.1"
 gem "puma", ">= 6.0"
-gem "rails", "~> 7.1.3", ">= 7.1.3.4"
+gem "rails", "~> 7.2"
 gem "redis", ">= 4.0.1"
 gem "ruby-progressbar"
 gem "sprockets-rails"
