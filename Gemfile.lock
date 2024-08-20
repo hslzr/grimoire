@@ -71,6 +71,7 @@ GEM
       minitest (>= 5.1)
       securerandom (>= 0.3)
       tzinfo (~> 2.0, >= 2.0.5)
+    authentication-zero (3.0.2)
     base64 (0.2.0)
     bigdecimal (3.1.8)
     bindex (0.8.1)
@@ -251,6 +252,7 @@ PLATFORMS
   x86_64-linux
 
 DEPENDENCIES
+  authentication-zero (~> 3.0)
   bootsnap
   debug
   importmap-rails

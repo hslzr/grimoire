@@ -2,6 +2,7 @@ source "https://rubygems.org"
 
 ruby "3.3.3"
 
+gem "authentication-zero", "~> 3.0"
 gem "bootsnap", require: false
 gem "importmap-rails"
 gem "pg", "~> 1.1"
@@ -24,4 +25,5 @@ end
 group :development do
   gem "web-console"
 end
-
+# Use Active Model has_secure_password [https://guides.rubyonrails.org/active_model_basics.html#securepassword]
+gem "bcrypt", "~> 3.1.7"
