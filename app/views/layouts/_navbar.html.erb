@@ -12,9 +12,7 @@
         <nav aria-label="Global" class="hidden md:block">
           <ul class="flex items-center gap-6 text-sm">
             <% if Current.user %>
-              <li>
-                <a class="text-gray-500 transition hover:text-gray-500/75" href="#">Collection</a>
-              </li>
+              <%= link_to "Collection", collection_path, class: "text-gray-500 transition hover:text-gray-500/75" %>
               <li>
                 <a class="text-gray-500 transition hover:text-gray-500/75" href="#">Decks</a>
               </li>

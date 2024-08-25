@@ -1,23 +1,25 @@
 <div class="mb-8">
-  <h1 class="font-bold text-4xl">Collection#index</h1>
+  <h1 class="font-bold text-4xl">Your collection</h1>
 </div>
 
-<div class="mb-8">
-</div>
-
-<div class="mt-8">
-  <table class="w-full table-auto">
-    <thead>
+<div class="mt-8 overflow-x-auto rounded-md border border-gray-200">
+  <table class="min-w-full divide-y-2 divide-gray-200 bg-white text-sm">
+    <thead class="text-left">
       <tr>
-        <th class="text-left">name</th>
-        <th class="text-left">created_at</th>
+        <th class="whitespace-no-wrap px-4 py-2 font-medium text-gray-900">Name</th>
+        <th class="whitespace-no-wrap px-4 py-2 font-medium text-gray-900">Set</th>
+        <th class="whitespace-no-wrap px-4 py-2 font-medium text-gray-900">Mana cost</th>
+        <th class="whitespace-no-wrap px-4 py-2 font-medium text-gray-900">Added at</th>
       </tr>
     </thead>
-    <tbody>
+
+    <tbody class="divide-y divide-gray-200">
       <% @collected_cards.each do |cc| %>
         <tr>
-          <td><%= cc.card.raw_data["name"] %></td>
-          <td><%= cc.created_at %></td>
+          <td class="whitespace-no-wrap px-4 py-2 font-medium text-gray-900"><%= display_name_for(cc) %></td>
+          <td class="whitespace-no-wrap px-4 py-2 text-gray-700"><%= cc.set_name %> (<%= cc.set.upcase %>)</td>
+          <td class="whitespace-no-wrap px-4 py-2 text-gray-700"><%= cc.mana_cost %></td>
+          <td class="whitespace-no-wrap px-4 py-2 text-gray-700"><%= cc.created_at %></td>
         </tr>
       <% end %>
     </tbody>

@@ -1,6 +1,6 @@
 class Card < ApplicationRecord
 
-  ACCESSIBLE_ATTRIBUTES = %i[name printed_name set lang colors mana_cost cmc]
+  ACCESSIBLE_ATTRIBUTES = %i[name printed_name set set_name lang colors mana_cost cmc]
 
   store_accessor :raw_data, *ACCESSIBLE_ATTRIBUTES
 
