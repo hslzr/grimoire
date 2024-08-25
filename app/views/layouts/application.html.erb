@@ -7,6 +7,7 @@
     <%= csp_meta_tag %>
     <%= stylesheet_link_tag "tailwind", "inter-font", "data-turbo-track": "reload" %>
 
+    <script src="https://kit.fontawesome.com/40cb9d8c09.js" crossorigin="anonymous"></script>
     <%= stylesheet_link_tag "application", "data-turbo-track": "reload" %>
     <%= javascript_importmap_tags %>
   </head>
@@ -20,7 +21,7 @@
         </div>
       <% end %>
     <% end %>
-    <main class="container mx-auto mt-20 px-5 flex flex-col">
+    <main class="container mx-auto mt-16 px-5 flex flex-col">
       <%= yield %>
     </main>
   </body>
