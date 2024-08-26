@@ -19,9 +19,13 @@ default: &default
   # https://guides.rubyonrails.org/configuring.html#database-pooling
   pool: <%= ENV.fetch("RAILS_MAX_THREADS") { 5 } %>
 
-development:
-  <<: *default
-  database: grimoire_development
+development: &development
+  primary:
+    <<: *default
+    database: grimoire_development
+  cache:
+    <<: *default
+    database: grimoire_cache_dev
 
   # The specified database role being used to connect to PostgreSQL.
   # To create additional roles in PostgreSQL see `$ createuser --help`.
@@ -53,9 +57,13 @@ development:
 # Warning: The database defined as "test" will be erased and
 # re-generated from your development database when you run "rake".
 # Do not set this db to the same as development or production.
-test:
-  <<: *default
-  database: grimoire_test
+test: &test
+  primary:
+    <<: *default
+    database: grimoire_test
+  cache:
+    <<: *default
+    database: grimoire_cache_test
 
 # As with config/credentials.yml, you never want to store sensitive information,
 # like your database password, in your source code. If your source code is
@@ -78,7 +86,11 @@ test:
 # for a full overview on how database connection configuration can be specified.
 #
 production:
-  <<: *default
-  database: grimoire_production
-  username: grimoire
-  password: <%= ENV["GRIMOIRE_DATABASE_PASSWORD"] %>
+  primary: &primary
+    <<: *default
+    database: grimoire_production
+    username: grimoire
+    password: <%= ENV["GRIMOIRE_DATABASE_PASSWORD"] %>
+  cache:
+    <<: *primary
+    database: grimoire_cache
