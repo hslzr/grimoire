@@ -215,6 +215,10 @@ GEM
     scryfall (0.2.10)
       http (~> 4)
     securerandom (0.3.1)
+    solid_cache (1.0.1)
+      activejob (>= 7.2)
+      activerecord (>= 7.2)
+      railties (>= 7.2)
     sprockets (4.2.1)
       concurrent-ruby (~> 1.0)
       rack (>= 2.2.4, < 4)
@@ -289,6 +293,7 @@ DEPENDENCIES
   redis (>= 4.0.1)
   ruby-progressbar
   scryfall
+  solid_cache
   sprockets-rails
   stimulus-rails
   tailwindcss-rails
