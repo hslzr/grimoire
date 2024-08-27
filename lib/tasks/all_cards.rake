@@ -93,11 +93,13 @@ namespace :all_cards do
     file_object = File.foreach(lang_file)
 
     file_object.each_slice(1_000) do |lines|
+      ids = lines.size.times.map { SecureRandom.uuid_v7 }
+
       cards = lines.map do |line|
         json = JSON.parse(line)
         json["scryfall_id"] = json.delete("id")
         json["lang"] = lang
-        { raw_data: json } 
+        { id: ids.shift, raw_data: json } 
       end
       
       Card.insert_all(cards)
