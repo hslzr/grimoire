@@ -17,9 +17,9 @@
       <% @collected_cards.each do |cc| %>
         <tr>
           <td class="whitespace-no-wrap px-4 py-2 font-medium text-gray-900"><%= display_name_for(cc) %></td>
-          <td class="whitespace-no-wrap px-4 py-2 text-gray-700"><%= cc.set_name %> (<%= cc.set.upcase %>)</td>
+          <td class="whitespace-no-wrap px-4 py-2 text-gray-700">(<%= cc.set.upcase %>) <%= cc.set_name %></td>
           <td class="whitespace-no-wrap px-4 py-2 text-gray-700"><%= cc.mana_cost %></td>
-          <td class="whitespace-no-wrap px-4 py-2 text-gray-700"><%= cc.created_at %></td>
+          <td class="whitespace-no-wrap px-4 py-2 text-gray-700"><%= cc.created_at.strftime("%d %b, %Y") %></td>
         </tr>
       <% end %>
     </tbody>
