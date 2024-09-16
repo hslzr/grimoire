@@ -9,6 +9,7 @@
 
     <script src="https://kit.fontawesome.com/40cb9d8c09.js" crossorigin="anonymous"></script>
     <%= stylesheet_link_tag "application", "data-turbo-track": "reload" %>
+    <script defer src="https://cdn.jsdelivr.net/npm/alpinejs@3.x.x/dist/cdn.min.js"></script>
     <%= javascript_importmap_tags %>
   </head>
 
@@ -21,8 +22,9 @@
         </div>
       <% end %>
     <% end %>
-    <main class="container mx-auto mt-16 px-5 flex flex-col">
+    <main class="container mx-auto max-w-screen-xl mt-16 px-5 flex flex-col">
       <%= yield %>
     </main>
+    <%= render "layouts/footer" %>
   </body>
 </html>
